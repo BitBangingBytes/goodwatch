@@ -133,7 +133,7 @@ const unsigned int keymap[]={
 };
 
 //! Returns a character of the current scan code.
-unsigned int key_chr(code){
+unsigned int key_chr(int code){
   /* Row is the upper nybble, column is the lower nybble.*/
   unsigned int i=0;
   for(i=0;keymap[i];i++){
@@ -147,7 +147,7 @@ unsigned int key_chr(code){
 
 
 //! Gets the currently held button as ASCII.  Don't use for typing.
-char getchar(){
+char key_char(){
   char c=key_chr(key_scan());
   if(c)
     //Clear the app timer when a button is pressed.
@@ -169,10 +169,22 @@ void __attribute__ ((interrupt(PORT2_VECTOR))) PORT2_ISR(void){
   //another interrupt on the *change* rather than just because a
   //button is still held.
   P2IES=P2IN&(BIT3|BIT4|BIT5|BIT6);
+  //P2IFG=0;
 
   //Scan for the new character, which we will compare to the old to
   //reduce duplicates.
   newchar=key_chr(key_scan());
+
+  //Clear the flag and restore all the scanning to defaults.
+  setdirections();
+  P2IFG=0;
+
+  /* By this point in the handler, we're done with handling the key
+     interrupt, so the flag has been cleared.  When we pass control to
+     the handler, it might take an absurdly long time to return, but
+     as long as the keypad change happens as it is being run, control
+     will come right back to this ISR on the next go round.
+   */
   
 
   //Bail quickly when the key is the same.
@@ -184,11 +196,5 @@ void __attribute__ ((interrupt(PORT2_VECTOR))) PORT2_ISR(void){
   }else{
     //printf(".");
   }
-
-  
-  //Fix the pin directions before we return.
-  setdirections();
-  //Clear the interrupt flags.
-  P2IFG=0;
 }
 

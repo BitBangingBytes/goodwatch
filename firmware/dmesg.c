@@ -29,6 +29,12 @@ int putchar(int c){
   return dmesg_buffer[dmesg_index]=(char) c;
 }
 
+//! Writes a character to the dmesg buffer.
+void dmesg_putc(void* p, char c){
+  putchar(c);
+}
+
+
 //! Clears the dmesg buffer.
 void dmesg_clear(){
   memset(dmesg_buffer, 0, DMESGLEN);

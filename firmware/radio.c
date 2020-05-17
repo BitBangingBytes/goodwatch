@@ -302,8 +302,14 @@ void radio_writesettings(const uint8_t *settings){
   if(!settings)
     settings=morsesettings;
 
+  /* This is ugly as sin, and it deserves a bit of an explanation.  We
+     are terminating on a null *pair* in the settings, so that every
+     pair can be set except setting IOCFG2 to 0, as that would be a
+     null pair.
+   */
   while(settings[i]!=0 || settings[i+1]!=0){
     radio_writereg(settings[i],settings[i+1]);
+    //printf("%02x,%02x\n",settings[i],settings[i+1]);
     i+=2;
   }
 }
@@ -315,7 +321,6 @@ uint8_t radio_strobe(uint8_t strobe){
   uint8_t  statusByte = 0;
   uint16_t count=0;
   uint16_t gdo_state;
-
 
   /*
   if(!has_radio)
@@ -352,7 +357,9 @@ uint8_t radio_strobe(uint8_t strobe){
 	    }
 	  }
 	  
-          // Delay for ~810usec at 1.05MHz CPU clock, see erratum RF1A7
+          // Delay for ~810usec at 1.05MHz CPU clock, see the CC430 Family User's
+          // Guide,§ 25.3.3.7.1 page 698 in rev E. The delay is to provide time
+          // for the radio's oscillator to stabilize.
           __delay_cycles(850);
         }
       }

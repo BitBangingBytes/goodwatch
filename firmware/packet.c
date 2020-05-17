@@ -98,7 +98,7 @@ packet_isr (void) {
 	//Wait for end of packet.
 	do{
 	  state=radio_getstate();
-	  __delay_cycles(8500);
+	  //__delay_cycles(8500);
 	}while(state==13 || state==14 || state==15 || state==20 || state==21);
 
 
@@ -114,7 +114,7 @@ packet_isr (void) {
 	  //Inform the application.
 	  app_packetrx(rxbuffer,rxlen);
 	}else if(state==17){
-	  printf("RX Overflow.\n");
+	  printf("RX Overflow.  Idling.\n");
 	  radio_strobe(RF_SIDLE);
 	}else{
 	  printf("Unknown RX state %d.\n",state);

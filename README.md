@@ -14,10 +14,15 @@ revoked if you try to pass off a pilsner instead.
 In addition to the source code, there is handy documentation in the
 [wiki](https://github.com/travisgoodspeed/goodwatch/wiki) and a
 general interest website at [goodwatch.org](https://goodwatch.org/).
+The wiki's
+[DeveloperGuide](https://github.com/travisgoodspeed/goodwatch/wiki/DeveloperGuide)
+page might be particularly handy.
 
 73 from Knoxville,
 
 --Travis
+
+![POCSAG Goodwatch Photo](photos/pocsag.jpg)
 
 ## Software Status
 
@@ -81,9 +86,17 @@ that the two projects will communicate with each other.
 
 [openchronos-ng-elf](https://github.com/BenjaminSoelberg/openchronos-ng-elf)
 seems to be the most recently maintained firmware for TI's OpenChronos
-devkit, which uses the CC430F6137.
+devkit, which uses the CC430F6137.  See Adam Laurie's
+[ChronIC](http://adamsblog.rfidiot.org/2013/03/you-can-ring-my-bell-adventures-in-sub.html)
+project for an early example of sniffing OOK traffic and replaying it
+from a watch.
 
 
 The [CharlieWatch](https://github.com/osresearch/charliewatch) from
 Trammell Hudson is a nice little fork of the GoodWatch that uses a
 charlieplexed array of LEDs instead of a Casio watchcase.
+
+[iceSIO](https://github.com/icelord75/icesio) matches the same Casio
+3208 casings as the GoodWatch, but uses a PIC16 platform with
+accelerometer, compass and environmental sensors.
+

@@ -18,6 +18,7 @@ extern const struct app clock_applet;
 #include "apps/phrase.h"
 #include "apps/rngapp.h"
 #include "apps/shabbat.h"
+#include "apps/hebrew.h"
 #include "apps/dmesg.h"
 
 //Then radio apps.
@@ -25,7 +26,10 @@ extern const struct app clock_applet;
 #include "apps/tuner.h"
 #include "apps/beacon.h"
 #include "apps/ook.h"
+#include "apps/shaders.h"
 #include "apps/counter.h"
+#include "apps/pager.h"
+#include "apps/jukebox.h"
 
 
 /* For each application, the init() function is called at entry.  The

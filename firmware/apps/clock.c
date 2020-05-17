@@ -14,6 +14,8 @@
 */
 
 #include <msp430.h>
+#include <stdio.h>
+
 #include "api.h"
 
 #include "applist.h"
@@ -167,6 +169,19 @@ int clock_exit(){
   return 0;
 }
 
+//! Plays the time as audio.
+void clock_playtime(int hold){
+  char buf[12];
+  sprintf(buf,"%02d %02d",
+          RTCHOUR, RTCMIN);
+  lcd_string(buf);
+  //Little delay, so we can quit early with dignity on accidental keypresses.
+  audio_morse("  ", 1);
+  audio_morse(buf, //Buffer to play.
+              hold //Play it only so long as the button is held down.
+              );
+}
+
 
 //! Draws the clock face in the main application.
 void clock_draw(int forced){
@@ -194,6 +209,8 @@ void clock_init(){
   lcd_zero();
   draw_time(1);
 }
+
+
 
 //! A button has been pressed for the clock.
 int clock_keypress(char ch){
@@ -247,9 +264,10 @@ int clock_keypress(char ch){
     break;
 
       
-  case '1':
-    /* 1 shows the the voltage.  To save on power, the reference is
-       not active when idling. */
+  case '=':
+    /* = shows the the voltage.  To save on power, the reference is
+     *   not active when idling.  This used to be the 1 button.
+     */
     ref_on();
     vcc=adc_getvcc();
     ref_off();
@@ -275,6 +293,22 @@ int clock_keypress(char ch){
     }else{
       lcd_string("NO RADIO");
     }
+    break;
+
+
+  case '+':
+    /* + beeps the time as morse code, which might be handy
+       for learning the code or when it's too dark to see the display.
+     */
+    clock_playtime(1);
+    break;
+
+  default:
+    /* All unused buttons fall through to the handler of the selected
+       submenu applet, but only the third row (1,2,3,-) is expected to
+       remain unused in the long run.
+     */
+    return submenu_fallthrough(ch);
     break;
   }
   return 1;

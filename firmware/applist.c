@@ -24,7 +24,7 @@ const struct app apps[]={
   {.name="clock", .init=clock_init, .draw=clock_draw, .exit=clock_exit,
    .keypress=clock_keypress
   },
-  
+
 #ifdef STOPWATCH_APP
   //Stopwatch
   {.name="timer", .init=stopwatch_init, .draw=stopwatch_draw, .exit=stopwatch_exit,
@@ -77,11 +77,21 @@ const struct app subapps[]={
 
 #ifdef SHABBAT_APP
   //Kosher applet for Shabbat that disables all inputs except the SET button.
-  {.name="shabbat ", .init=shabbat_init, .draw=shabbat_draw, .exit=shabbat_exit,
+  {.name="shabbat", .init=shabbat_init, .draw=shabbat_draw, .exit=shabbat_exit,
    .keypress=shabbat_keypress
   },
 #endif
-  
+
+
+#ifdef HEBREW_APP
+  //Hebrew Calendar applet.  Falls through so that it can run from the clock.
+  {.name="hebrew", .fallthrough=hebrew_keypress
+   //.init=hebrew_init, .draw=hebrew_draw, .exit=hebrew_exit,
+   //.keypress=hebrew_keypress,
+   
+  },
+#endif
+
 #ifdef PHRASE_APP
   // Phrase - passphrase generator
   {.name="phrase", .init=phrase_init, .draw=phrase_draw, .exit=phrase_exit,
@@ -128,6 +138,33 @@ const struct app subapps[]={
   },
 #endif
 
+#ifdef SHADERS_APP
+  //somfy RTS
+  {.name="shaders",
+   .init=shaders_init, .draw=shaders_draw, .exit=shaders_exit,
+   .packetrx=shaders_packetrx, .packettx=shaders_packettx,
+   .keypress=shaders_keypress
+  },
+#endif
+
+#ifdef JUKEBOX_APP
+  // TouchTunes Jukebox
+  {.name="JUKEBOX",
+   .init=jukebox_init, .draw=jukebox_draw, .exit=jukebox_exit,
+   .packetrx=jukebox_packetrx, .packettx=jukebox_packettx,
+   .keypress=jukebox_keypress
+  },
+#endif
+
+
+#ifdef PAGER_APP
+  //POCSAG Pager
+  {.name="pager", .init=pager_init, .draw=pager_draw, .exit=pager_exit,
+   .packetrx=pager_packetrx,
+   .keypress=pager_keypress
+  },
+#endif
+
 
 #ifdef CALIBRATE_APP
   //CALIBRATE
@@ -136,6 +173,7 @@ const struct app subapps[]={
    .keypress=calibrate_keypress
   },
 #endif
+  
 
   //End on null entry.
   {.name=0, .init=0, .draw=0, .exit=0} 
